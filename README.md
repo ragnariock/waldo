@@ -1,2 +1,2 @@
 # Waldo
-Weapons Detection Application
+Weapons Detection and Localization
