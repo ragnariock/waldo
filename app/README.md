@@ -36,7 +36,7 @@ coverage report
 
 Testing coverage is at least 75% for [app.py](https://github.com/luisra/waldo/blob/master/app/app.py) and [detector.py](https://github.com/luisra/waldo/blob/master/app/detector.py).
 
-## API Call
+## API
 If the app is running, a request can be made using the following:
 ```
 def send_request(url, conf, buff, file):
