@@ -29,7 +29,7 @@ Note: This implementation does not provide real-time detection (as some post-pro
 
 ## Classes
 
-The model was trained on two classes, gun and knife. Due to poor performance on the knife class, it has been disabled from detection  until a better dataset can be found. However, this can be enabled by making a small change to the detector file.
+The model was trained on two classes, gun and knife. Due to poor performance on the knife class, it has been disabled from detection  until a better dataset can be found. However, this can be enabled by updating the detector file.
 
 Perfomance (AP):
 * Gun: 0.85
