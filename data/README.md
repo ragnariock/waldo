@@ -11,12 +11,14 @@ Each instance has to be captured in one row. If an image has multiple objects, i
 In this context, xmin, ymin, xmax, and ymax define the bounding box around the object.
 
 ## Results
-Gun Instances
- * Train: 5,572
- * Test: 1,356
+* Gun Instances
+  * Train: 5,572
+  * Test: 1,356
+  
+* Knife Instances
+  * Train: 5,536
+  * Test: 2,559
 
-Knife Instances
-* Train: 5,536
-* Test: 2,559
-
-Total Train Instances: 11,1108 | Total Test Instances: 3,915
+* Total Instances
+  * Train: 11,1108
+  * Test: 3,915
