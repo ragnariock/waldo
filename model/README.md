@@ -111,7 +111,7 @@ classes = {0: 'gun', 1: 'knife'}
 model = models.load_model("/content/model50.h5", backbone_name="resnet50")
 ```
 
-Image Prototype
+Image Prototype:
 
 ```
 def imgDetect(file, conf): 
@@ -163,7 +163,7 @@ def imgDetect(file, conf):
     return "Not a valid image."
 ```
 
-Video Prototype
+Video Prototype:
 
 ```
 def vidDetect(file, conf): 
@@ -235,3 +235,30 @@ def vidDetect(file, conf):
     else:
       return "Not a valid video."
 ```
+
+## Samples
+
+Images:
+
+```
+imgDetect('/content/cop.jpg', 0.2)
+
+```
+<img src="https://github.com/luisra/waldo/blob/master/screenshots/ScreenThree.png">
+
+```
+imgDetect('/content/gunman.jpg', 0.7)
+
+```
+<img src="https://github.com/luisra/waldo/blob/master/screenshots/ScreenFour.png">
+
+Video:
+
+```
+vidDetect('/content/guns.mp4',0.7)
+
+```
+
+[![Watch the video](https://img.youtube.com/vi/zxenHpdwPuY/hqdefault.jpg
+)](https://www.youtube.com/embed/zxenHpdwPuY)
+
