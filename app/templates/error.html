@@ -90,10 +90,10 @@
                                 
                                 <div id="loadingInput" style="display:none;"><img src="/static/loading-image.gif" alt="" /></div>
                                 
-                                <img id="contentInput" src="{{ upload }}" method = 'POST' alt="" onerror='this.style.display = "none"' width="320" height="240">
+                                <img id="contentInput" src="" method = 'POST' alt="" onerror='this.style.display = "none"' width="320" height="240">
                                 
                                 <video id="videoInput" method = 'POST' width="320" height="240">
-                                    <source src="{{ upload }}" type="video/mp4">
+                                    <source src="" type="video/mp4">
                                 </video>
                                 
                             </div> 
@@ -106,10 +106,10 @@
                                 
                                 <div id="loadingOutput" style="display:none;"><img src="/static/loading-image.gif" alt="" /></div>
     
-                                <img id="contentOutput" src="{{ results }}" method = 'POST' alt="" onerror='this.style.display = "none"' width="320" height="240">
+                                <img id="contentOutput" src="" method = 'POST' alt="" onerror='this.style.display = "none"' width="320" height="240">
                                 
                                 <video id="videoOutput" method = 'POST' width="320" height="240">
-                                    <source src="{{ results }}" type="video/mp4">
+                                    <source src="" type="video/mp4">
                                 </video>
 
                                 
@@ -122,11 +122,7 @@
                             <p></p>
                             <p>Parameters:</p>
                             <textarea rows="5" cols="25" style="overflow:auto">
-  {{ confidence }}
-  {{ buffer }}
-                                
-  {{ uploadTime }}
-  {{ detectTime }}           
+  {{ results }}
                             </textarea>
                         </div>
                         
