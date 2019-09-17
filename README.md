@@ -21,7 +21,7 @@ References:
 1. [How RetinaNet Fixes The Shortcomings Of SSD With Focal Loss](https://www.analyticsindiamag.com/what-is-retinanet-ssd-focal-loss/)
 2. [The intuition behind RetinaNet](https://medium.com/@14prakash/the-intuition-behind-retinanet-eb636755607d) 
 
-## Use Case
+## Possible Use Case
 Early warning system, or post-processing analysis, of CCTV footage (or images).
 
 Note: This implementation does not provide real-time detection (as some post-processing steps are involved).
