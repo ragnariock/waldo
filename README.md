@@ -22,14 +22,12 @@ References:
 2. [The intuition behind RetinaNet](https://medium.com/@14prakash/the-intuition-behind-retinanet-eb636755607d) 
 
 ## Use Case
-
 Early warning system, or post-processing analysis, of CCTV footage (or images).
 
 Note: This implementation does not provide real-time detection (as some post-processing steps are involved).
 
 ## Classes
-
-The model was trained on two classes, gun and knife. Due to poor performance on the knife class, it has been disabled from detection  until a better dataset can be found. However, this can be enabled by updating the detector file.
+The model was trained on two classes, gun and knife. Due to poor performance on the knife class, it has been disabled from detection  until a better dataset can be found. However, this can be enabled by updating the [detector](https://github.com/luisra/waldo/blob/master/app/detector.py) file.
 
 Perfomance (AP):
 * Gun: 0.85
