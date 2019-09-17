@@ -12,6 +12,22 @@ Web app using Flask and Google Cloud for demonstration purposes.
 
 In the case of an image, a buffer of 0 indicates no additional suppression of overlapping bounding boxes.
 
+## Testing & Coverage
+The following 4 tests are available:
+* Route check
+* HTML content
+* Results (UI)
+* Results (API)
+
+To execute:
+```
+coverage run test.py
+```
+For coverage details:
+```
+coverage report
+```
+
 ## API Call
 If the app is running, a request can be made using the following:
 ```
