@@ -49,9 +49,9 @@ docker run -p 8050:5000 --runtime=nvidia --rm wally
 
 Home:
 
-<img src="https://github.com/luisra/waldo/blob/master/screenshots/ScreenOne.png" width="650">
+<img src="https://github.com/luisra/waldo/blob/master/screenshots/ScreenOne.png" width="625">
 
 
 Output:
 
-<img src="https://github.com/luisra/waldo/blob/master/screenshots/ScreenTwo.png" width="650">
+<img src="https://github.com/luisra/waldo/blob/master/screenshots/ScreenTwo.png" width="625">
