@@ -48,6 +48,8 @@ Even if the input file can't be displayed, the output file should (as it will ha
 3. Add GCP bucket and folder details.
 4. Add GCP credentials.
 
+More application details [here](https://github.com/luisra/waldo/tree/master/app).
+
 ## Flask
 To run app locally:
 ```
