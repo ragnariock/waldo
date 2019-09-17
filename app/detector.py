@@ -16,14 +16,21 @@ def gkDetect(f, filename, conf, buff, model, sess):
     import urllib.request
     import numpy as np
     import requests
+    import random
     import cv2
     import os
 
     # prep
-    images = ['png', 'jpg', 'jpeg', 'gif', 'tif', 'tiff']
+    images = ['jpg', 'jpeg', 'png', 'tif', 'tiff']
     videos = ['avi', 'flv', 'mp4', 'mov', 'wmv', 'mkv']
     classes = {0: 'gun', 1: 'knife'}
     ext = filename.split('.')[-1]
+    
+    try:
+        fname = filename.split('.')[-2]
+    except:
+        return "Please add extension to filename and try again."
+    
     bucket =
     folder =
     
@@ -145,9 +152,18 @@ def gkDetect(f, filename, conf, buff, model, sess):
                 prevScene = sceneGet(prevFrame, scenes)
                 diff = currFrame - prevFrame
                 
+                # get current and previous label
+                currLab = store[i][2]
+                prevLab = store[i-1][2]
+
                 # get current and previous bounding box
                 currBox = store[i][0] 
                 prevBox = store[i-1][0]
+                
+                # move along if scenes/labels are different or gap is greater than buffer
+                if (currScene != prevScene) or (currLab != prevLab) or (diff > int(buff)):
+                    cleaned.append(store[i])
+                    continue
                 
                 # check if bounding boxes intersect
                 maxBox = intersect(prevBox, currBox)
@@ -156,15 +172,12 @@ def gkDetect(f, filename, conf, buff, model, sess):
                 if currFrame == prevFrame:
                     if len(maxBox) == 4: # and intersect
                         if (maxBox == currBox).all(): # if current is bigger than previous
-                            del cleaned[-1] # delete previous
+                            del cleaned[-1]# delete previous
+                            cleaned.append(store[i]) # append current
                         else:
                             continue
-
-                # move along if scenes are different or gap is greater than buffer
-                if (currScene != prevScene) or (diff > int(buff)):
-                    cleaned.append(store[i])
-                                                                 
-                else: # if same scene and gap within buffer
+                                               
+                else: # if same scene and label and gap within buffer
                     
                     if len(maxBox) == 4: # if intersect
                         N = diff - 1 # get number of missing bounding boxes
@@ -189,9 +202,76 @@ def gkDetect(f, filename, conf, buff, model, sess):
         return cleaned
 ###
 
+### Image Functions ###
+
+    def cleanImg(store):
+        
+        """This function will suppress overlapping bounding boxes with a smaller area."""
+        
+        # prep
+        cleaned = store
+        rem = []
+        indx = 0
+        d = {}
+        
+        # group detections by label
+        for (box, score, label) in store:
+            
+            if label in d:
+                d[label].append((box,score,label,indx))
+                indx += 1 # track index
+            
+            else:
+                d[label] = [(box,score,label,indx)]
+                indx += 1 # track index
+        
+        # for every label
+        for key, value in d.items():
+            
+            labStore = value # store detections
+            
+            for i in range(len(labStore)): # for every detection
+                
+                currBox = labStore[i][0]
+                currIndx = labStore[i][3]
+                
+                for k in range(len(labStore)): # compare with the rest
+
+                    iterBox = labStore[k][0]
+                    iterIndx = labStore[k][3]
+                    
+                    if iterIndx in rem: # move along if determination made 
+                        continue
+                    
+                    if (currBox != iterBox).all():
+                        maxBox = intersect(iterBox, currBox) # check if bounding boxes intersect
+
+                        if len(maxBox) == 4: # if they intersect
+                            if (maxBox == currBox).all(): # and current is bigger
+                                if iterIndx not in rem:
+                                    rem.append(iterIndx) # store iter index
+                            else:
+                                if currIndx not in rem: # if iter is bigger
+                                    rem.append(currIndx) # store current index
+                                    break
+                        else:
+                            continue
+        
+        # sort
+        rem = sorted(rem,reverse=True)
+        
+        # remove
+        for indx in rem:
+            del cleaned[indx]
+                            
+        return cleaned
+###
+
 ### Images ###
         
-    if ext in images: # check extension
+    if ext.lower() in images: # check extension
+        
+        store = []
         
         # load image and make copy
         image = np.asarray(Image.open(requests.get(f, stream=True).raw).convert('RGB'))
@@ -211,30 +291,44 @@ def gkDetect(f, filename, conf, buff, model, sess):
         # rescale
         boxes /= scale
         
+        # first pass
         for (box, score, label) in zip(boxes[0], scores[0], labels[0]):
             
             if score < float(conf): # check treshold
                 continue
         
-            if classes[label] == 'gun': # draw
-                
+            #if 1 == 1:
+            if classes[label] == 'gun': # store detection
+            
                 box = box.astype("int")
-                xmin, ymin, xmax, ymax = box
-                    
-                cv2.rectangle(output, (xmin, ymin), (xmax, ymax), 
-                              (0, 255, 0), 2)
+                store.append((box,score,label))
+
+        # smoothing
+        if int(buff) == 0:
+            cleaned = store
+        else:
+            cleaned = cleanImg(store)
+        
+        # draw
+        for (box, score, label) in cleaned:
                 
-                cv2.putText(output, classes[label], (xmin, ymin - 10),
-                		cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+            box = box.astype("int")
+            xmin, ymin, xmax, ymax = box
+                    
+            cv2.rectangle(output, (xmin, ymin), (xmax, ymax), 
+                          (0, 255, 0), 2)
+                
+            cv2.putText(output, classes[label], (xmin, ymin - 10),
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
         
         # upload
         gcs = storage.Client()
         bucket = gcs.get_bucket('{}'.format(bucket))
         dt = datetime.today().strftime('%Y%m%d')
-        blob = bucket.blob('{}/{}_output_'.format(folder,dt) + filename)
+        blob = bucket.blob('{}/{}_output_'.format(folder,dt) + fname + '.jpeg')
     
         temp = NamedTemporaryFile()
-        tmpFile = ''.join([str(temp.name),'.jpg'])
+        tmpFile = temp.name + '.jpeg'
         cv2.imwrite(tmpFile,output)
         
         blob.upload_from_filename(tmpFile, content_type='image/jpeg')
@@ -244,8 +338,9 @@ def gkDetect(f, filename, conf, buff, model, sess):
  
 ### Videos ###    
         
-    if ext in videos: # check extension
+    elif ext.lower() in videos: # check extension
         
+        f = f.replace('https', 'http')
         inputURL = f
         
         # first pass        
@@ -280,7 +375,8 @@ def gkDetect(f, filename, conf, buff, model, sess):
                 
                 if score < float(conf): # check treshold
                     continue
-           
+                
+                #if 1 == 1:
                 if classes[label] == 'gun': # store detections
                
                     box = box.astype("int")
@@ -290,8 +386,8 @@ def gkDetect(f, filename, conf, buff, model, sess):
         cap.release()
 
         # scene details
-        tmp = NamedTemporaryFile(delete=False)
-        tmpScene = ''.join([str(tmp.name),'.mp4'])        
+        tmp = NamedTemporaryFile(delete=False, suffix='.mp4')
+        tmpScene = tmp.name
         
         urllib.request.urlretrieve(f,tmpScene)
         scenes = sceneDetect(tmpScene)
@@ -313,8 +409,8 @@ def gkDetect(f, filename, conf, buff, model, sess):
         writer = None
         c = 0
         
-        temp = NamedTemporaryFile(delete=False)
-        tmpFile = ''.join([str(temp.name),'.mp4'])
+        temp = NamedTemporaryFile(delete=False, suffix = '.mp4')
+        tmpFile = temp.name
            
         while True: # process video
                    
@@ -332,19 +428,19 @@ def gkDetect(f, filename, conf, buff, model, sess):
                    
                 for (box, score, label, f) in recs: # draw
                    
-                        box = box.astype("int")
-                        xmin, ymin, xmax, ymax = box
+                    box = box.astype("int")
+                    xmin, ymin, xmax, ymax = box
 
                            
-                        cv2.rectangle(frame, (xmin, ymin), (xmax, ymax),
-                        (0, 255, 0), 2)
+                    cv2.rectangle(frame, (xmin, ymin), (xmax, ymax),
+                                  (0, 255, 0), 2)
                         
-                        cv2.putText(frame, classes[label], (xmin, ymin - 10),
-                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
+                    cv2.putText(frame, classes[label], (xmin, ymin - 10),
+                                cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
             
             # write
             if writer is None:
-                fourcc = cv2.VideoWriter_fourcc(*"MP4V")
+                fourcc = cv2.VideoWriter_fourcc(*'mp4v')
                 writer = cv2.VideoWriter(tmpFile, fourcc, fps,
                                              (frame.shape[1], frame.shape[0]))
          
@@ -366,8 +462,8 @@ def gkDetect(f, filename, conf, buff, model, sess):
         temp.close()
         os.unlink(temp.name)
               
-        tempAudio = NamedTemporaryFile()
-        tmpVid = ''.join([str(tempAudio.name),'.mp4'])
+        tempAudio = NamedTemporaryFile(suffix='.mp4')
+        tmpVid = tempAudio.name
         final.write_videofile(tmpVid)
         
         video.close()
@@ -378,8 +474,14 @@ def gkDetect(f, filename, conf, buff, model, sess):
         gcs = storage.Client()
         bucket = gcs.get_bucket('{}'.format(bucket))
         dt = datetime.today().strftime('%Y%m%d')
-        blob = bucket.blob('{}/{}_output_'.format(folder,dt) + filename)
+        blob = bucket.blob('{}/{}_output_'.format(folder,dt) + fname + '.mp4')
         blob.upload_from_filename(tmpVid, content_type='video/mp4')
         
         return blob.public_url
 ###
+
+### Other ###    
+        
+    else:
+        return "Not a valid file. Try --\n\n Images: jpg, jpeg, png, tif, tiff\n Videos: avi, flv, mp4, mov, wmv, mkv"
+        
