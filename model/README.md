@@ -104,14 +104,14 @@ K.set_session(sess)
 
 Known variables.
 ```
-images = ['png', 'jpg', 'jpeg', 'gif', 'tif', 'tiff']
+images = ['png', 'jpg', 'jpeg', 'tif', 'tiff']
 videos = ['avi', 'flv', 'mp4', 'mov', 'wmv', 'mkv']
 classes = {0: 'gun', 1: 'knife'}
 
 model = models.load_model("/content/model50.h5", backbone_name="resnet50")
 ```
 
-#### Image Prototype
+Image Prototype
 
 ```
 def imgDetect(file, conf): 
@@ -163,7 +163,7 @@ def imgDetect(file, conf):
     return "Not a valid image."
 ```
 
-#### Video Prototype
+Video Prototype
 
 ```
 def vidDetect(file, conf): 
