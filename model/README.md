@@ -262,3 +262,4 @@ vidDetect('/content/guns.mp4',0.7)
 [![Watch the video](https://img.youtube.com/vi/zxenHpdwPuY/hqdefault.jpg
 )](https://www.youtube.com/embed/zxenHpdwPuY)
 
+Note the jitter and lack of sound. These two issues will be addressed moving forward.
