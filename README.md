@@ -15,7 +15,7 @@ In other words:
 * Classification Subnet: Predicts the probability of an object being present in a particular location.
 * Box Regression Subnet: Outputs the object location with respect to anchor box if an object exists.
 
-The backbone represent the feature pyramid network built on top of ResNet50 or ResNet101. However, other classifiers can be used.
+The backbone represents the feature pyramid network built on top of ResNet50 or ResNet101. However, other classifiers can be used.
 
 References:
 1. [How RetinaNet Fixes The Shortcomings Of SSD With Focal Loss](https://www.analyticsindiamag.com/what-is-retinanet-ssd-focal-loss/)
@@ -44,3 +44,14 @@ To deploy container:
 ```
 docker run -p 8050:5000 --runtime=nvidia --rm wally 
 ```
+
+## Screenshots
+
+Home:
+
+<img src="https://github.com/luisra/waldo/blob/master/screenshots/ScreenOne.png" width="650">
+
+
+Output:
+
+<img src="https://github.com/luisra/waldo/blob/master/screenshots/ScreenTwo.png" width="650">
