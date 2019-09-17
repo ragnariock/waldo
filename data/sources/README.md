@@ -7,4 +7,4 @@
 5. Knife images (val2014.zip*) - [COCO dataset](http://cocodataset.org/#download)
 6. Knife annotations (annotations_trainval2014.zip) - [COCO dataset](http://cocodataset.org/#download)
 
-*This file has been modified to contain ONLY knife images.
+*This file has been modified to contain only knife images.
