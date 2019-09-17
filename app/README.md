@@ -12,6 +12,10 @@ Web app using Flask and Google Cloud for demonstration purposes.
 
 In the case of an image, a buffer of 0 indicates no additional suppression of overlapping bounding boxes.
 
+## Testing
+
+
+
 ## API Call
 If the app is running, a request can be made using the following:
 ```
@@ -38,3 +42,4 @@ def send_request(url, conf, buff, file):
 
 send_request( 'IP:8050/api', conf, buff, file)
 ```
+Otherwise the web interface will be available at: IP:8050/
