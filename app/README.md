@@ -28,6 +28,8 @@ For coverage details:
 coverage report
 ```
 
+Testing coverage is at least 75% for app.py and detector.py.
+
 ## API Call
 If the app is running, a request can be made using the following:
 ```
