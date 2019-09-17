@@ -35,14 +35,14 @@ Perfomance (AP):
 * Gun: 0.85
 * Knife: 0.30
 
-Note: Performance was measured on images (not videos).
+Performance was measured on images (not videos).
 
 ## File Formats
 The following extensions are allowed:
 * images: jpg, jpeg, png, tif, tiff
 * videos: avi, flv, mp4, mov, wmv, mkv
 
-Note: Even if the input file can't be displayed, the output file should (as it will have been converted to jpeg/mp4).
+Even if the input file can't be displayed, the output file should (as it will have been converted to jpeg/mp4).
 
 ## Installation
 1. Clone app folder.
