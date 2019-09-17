@@ -12,6 +12,12 @@ Web app using Flask and Google Cloud for demonstration purposes.
 
 In the case of an image, a buffer of 0 indicates no additional suppression of overlapping bounding boxes.
 
+## Output Metrics
+In addtion to the previous two:
+
+- Upload Time: Number of seconds it took to upload the file.
+- Detect Time: Number of seconds it took to analyze the file for detections.
+
 ## Testing & Coverage
 The following 4 tests are available:
 * Route check
@@ -28,7 +34,7 @@ For coverage details:
 coverage report
 ```
 
-Testing coverage is at least 75% for app.py and detector.py.
+Testing coverage is at least 75% for [app.py](https://github.com/luisra/waldo/blob/master/app/app.py) and [detector.py](https://github.com/luisra/waldo/blob/master/app/detector.py).
 
 ## API Call
 If the app is running, a request can be made using the following:
@@ -57,3 +63,14 @@ def send_request(url, conf, buff, file):
 send_request( 'IP:8050/api', conf, buff, file)
 ```
 Otherwise, the web UI will be available at: IP:8050/
+
+## Screenshots
+Home:
+
+<img src="https://github.com/luisra/waldo/blob/master/screenshots/ScreenOne.png" width="625">
+
+
+Output:
+
+<img src="https://github.com/luisra/waldo/blob/master/screenshots/ScreenTwo.png" width="625">
+
