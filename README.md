@@ -33,7 +33,7 @@ Perfomance (AP):
 * Gun: 0.85
 * Knife: 0.30
 
-Performance was measured on images (not videos).
+Performance was measured on images (not videos). More details on average precision (AP) can be found [here](https://github.com/luisra/waldo/tree/master/model).
 
 ## File Formats
 The following extensions are allowed:
